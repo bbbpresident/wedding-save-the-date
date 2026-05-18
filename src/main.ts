@@ -1,5 +1,5 @@
 import './style.css'
-import saveTheDatePhoto from './assets/savethedatephoto.jpg'
+import saveTheDatePhoto from './assets/savethedate_vector.png'
 
 const CARD_W = 480 // 480
 const CARD_H = 640 // 640
@@ -12,7 +12,8 @@ function buildDOM(photoSrc: string): { canvas: HTMLCanvasElement } {
   scene.className = 'relative rotate-[0deg] cursor-crosshair select-none'
 
   const card = document.createElement('div')
-  card.className = 'card-reveal w-[calc(100vw-40px)] aspect-[3/4] md:w-[480px] md:h-[640px] md:aspect-auto rounded-[4px] relative overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.14)] bg-center bg-[length:100%_100%] bg-white'
+  // card.className = 'card-reveal w-[calc(100vw-40px)] aspect-[3/4] md:w-[480px] md:h-[640px] md:aspect-auto rounded-[4px] relative overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.14)] bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
+  card.className = 'card-reveal w-[calc(100vw-40px)] aspect-[3/4] md:w-[480px] md:h-[640px] md:aspect-auto rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
   card.style.backgroundImage = `url(${photoSrc})`
 
   const canvas = document.createElement('canvas')
@@ -73,12 +74,10 @@ function getCanvasPos(canvas: HTMLCanvasElement, clientX: number, clientY: numbe
   const lx = dx * Math.cos(rad) - dy * Math.sin(rad)
   const ly = dx * Math.sin(rad) + dy * Math.cos(rad)
 
-  // Scale from CSS display size back to internal canvas resolution
-  const scaleX = CARD_W / canvas.offsetWidth
-  const scaleY = CARD_H / canvas.offsetHeight
+  // Canvas displays at its natural size (CARD_W × CARD_H), so no scaling needed
   return {
-    x: lx * scaleX + CARD_W / 2,
-    y: ly * scaleY + CARD_H / 2,
+    x: lx + CARD_W / 2,
+    y: ly + CARD_H / 2,
   }
 }
 
@@ -132,7 +131,7 @@ function init() {
     const now = Date.now()
     if (now - lastCheck < 150) return
     lastCheck = now
-    if (getRevealedFraction(ctx) >= 0.5) {
+    if (getRevealedFraction(ctx) >= 0.4) {
       done = true
       canvas.style.transition = 'opacity 2s ease'
       canvas.style.opacity = '0'

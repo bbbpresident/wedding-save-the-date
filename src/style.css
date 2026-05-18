@@ -7,10 +7,10 @@
   body {
     @apply flex items-center justify-center;
     font-family: 'Montserrat', sans-serif;
-    background-color: #faf7f2;
-    background-image:
-      radial-gradient(ellipse at 20% 50%, rgba(201, 169, 110, 0.06) 0%, transparent 60%),
-      radial-gradient(ellipse at 80% 50%, rgba(201, 169, 110, 0.06) 0%, transparent 60%);
+    background-color: #3f0d0d;
+    /* background-image: */
+      /* radial-gradient(ellipse at 20% 50%, rgba(201, 169, 110, 0.06) 0%, transparent 60%), */
+      /* radial-gradient(ellipse at 80% 50%, rgba(201, 169, 110, 0.06) 0%, transparent 60%); */
   }
   #app {
     @apply relative flex items-center justify-center w-screen h-screen;
@@ -21,11 +21,11 @@
   .card-reveal::before {
     content: '';
     @apply absolute inset-0 rounded-[4px] pointer-events-none z-[1];
-    border: 1.5px solid rgba(201,169,110,0.35);
+    /* border: 1.5px solid rgba(201,169,110,0.35); */
   }
   .card-reveal::after {
     content: '';
     @apply absolute inset-0 rounded-[2px] pointer-events-none z-[1];
-    border: 1px solid rgba(201,169,110,0.2);
+    /* border: 1px solid rgba(201,169,110,0.2); */
   }
 }
