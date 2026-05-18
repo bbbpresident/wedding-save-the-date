@@ -1,29 +1,34 @@
 import './style.css'
 import saveTheDatePhoto from './assets/savethedate_vector.png'
 
-const CARD_W = 480 // 480
-const CARD_H = 640 // 640
+let CARD_W = window.innerWidth
+let CARD_H = window.innerHeight
 const BRUSH_RADIUS = 36
 
 function buildDOM(photoSrc: string): { canvas: HTMLCanvasElement } {
+  CARD_W = window.innerWidth
+  CARD_H = window.innerHeight
+
   const app = document.getElementById('app')!
 
+  // Card at original proportions, centered in viewport
   const scene = document.createElement('div')
-  scene.className = 'relative rotate-[0deg] cursor-crosshair select-none'
+  scene.className = 'relative cursor-crosshair select-none'
 
   const card = document.createElement('div')
-  // card.className = 'card-reveal w-[calc(100vw-40px)] aspect-[3/4] md:w-[480px] md:h-[640px] md:aspect-auto rounded-[4px] relative overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.14)] bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
-  card.className = 'card-reveal w-[calc(100vw-40px)] aspect-[3/4] md:w-[480px] md:h-[640px] md:aspect-auto rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
+  card.className = 'card-reveal w-[min(calc(100vw-40px),calc(100vh*2347/3390))] aspect-[2347/3390] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
   card.style.backgroundImage = `url(${photoSrc})`
 
+  scene.appendChild(card)
+  app.appendChild(scene)
+
+  // Full-screen scratch canvas overlaid on top of everything
   const canvas = document.createElement('canvas')
-  canvas.className = 'absolute top-0 left-0 w-full h-full touch-none'
+  canvas.className = 'fixed inset-0 z-10 touch-none cursor-crosshair'
   canvas.width = CARD_W
   canvas.height = CARD_H
 
-  card.appendChild(canvas)
-  scene.appendChild(card)
-  app.appendChild(scene)
+  app.appendChild(canvas)
 
   return { canvas }
 }
@@ -50,7 +55,7 @@ function drawScratchLayer(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = 'rgba(140,125,105,0.55)'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-  ctx.fillText('SCRATCH  HERE', 0, 0)
+  ctx.fillText('something awaits', 0, 0)
   ctx.restore()
 
   ctx.strokeStyle = 'rgba(201,169,110,0.25)'
@@ -131,7 +136,7 @@ function init() {
     const now = Date.now()
     if (now - lastCheck < 150) return
     lastCheck = now
-    if (getRevealedFraction(ctx) >= 0.4) {
+    if (getRevealedFraction(ctx) >= 0.3) {
       done = true
       canvas.style.transition = 'opacity 2s ease'
       canvas.style.opacity = '0'
