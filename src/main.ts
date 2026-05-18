@@ -51,11 +51,12 @@ function drawScratchLayer(ctx: CanvasRenderingContext2D) {
 
   ctx.save()
   ctx.translate(CARD_W / 2, CARD_H / 2)
-  ctx.font = '300 13px Montserrat, sans-serif'
+  ctx.font = '300 20px Montserrat, sans-serif'
   ctx.fillStyle = 'rgba(140,125,105,0.55)'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillText('something awaits', 0, 0)
+  ctx.fillText('click here.', 0, 20)
   ctx.restore()
 
   ctx.strokeStyle = 'rgba(201,169,110,0.25)'
