@@ -1,23 +1,27 @@
 import './style.css'
-import saveTheDatePhoto from './assets/savethedate_vector.png'
+import saveTheDatePhoto_long from './assets/savethedate_long.png'
+import saveTheDatePhoto_wide from './assets/savethedate_wide.png'
 
 let CARD_W = window.innerWidth
 let CARD_H = window.innerHeight
 const BRUSH_RADIUS = 36
 
-function buildDOM(photoSrc: string): { canvas: HTMLCanvasElement } {
+function buildDOM(): { canvas: HTMLCanvasElement; revealThreshold: number } {
   CARD_W = window.innerWidth
   CARD_H = window.innerHeight
 
+  const isDesktop = window.innerWidth >= 768
+
   const app = document.getElementById('app')!
 
-  // Card at original proportions, centered in viewport
   const scene = document.createElement('div')
   scene.className = 'relative cursor-crosshair select-none'
 
   const card = document.createElement('div')
-  card.className = 'card-reveal w-[min(calc(100vw-40px),calc(100vh*2347/3390))] aspect-[2347/3390] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
-  card.style.backgroundImage = `url(${photoSrc})`
+  card.className = isDesktop
+    ? 'card-reveal w-[min(calc(100vw-40px),calc(100vh*3390/2346))] aspect-[3390/2346] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
+    : 'card-reveal w-[min(calc(100vw-40px),calc(100vh*2347/3390))] aspect-[2347/3390] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
+  card.style.backgroundImage = `url(${isDesktop ? saveTheDatePhoto_wide : saveTheDatePhoto_long})`
 
   scene.appendChild(card)
   app.appendChild(scene)
@@ -30,7 +34,7 @@ function buildDOM(photoSrc: string): { canvas: HTMLCanvasElement } {
 
   app.appendChild(canvas)
 
-  return { canvas }
+  return { canvas, revealThreshold: isDesktop ? 0.20 : 0.40 }
 }
 
 function drawScratchLayer(ctx: CanvasRenderingContext2D) {
@@ -124,7 +128,7 @@ function getRevealedFraction(ctx: CanvasRenderingContext2D): number {
 }
 
 function init() {
-  const { canvas } = buildDOM(saveTheDatePhoto)
+  const { canvas, revealThreshold } = buildDOM()
   const ctx = canvas.getContext('2d')!
   drawScratchLayer(ctx)
 
@@ -137,7 +141,7 @@ function init() {
     const now = Date.now()
     if (now - lastCheck < 150) return
     lastCheck = now
-    if (getRevealedFraction(ctx) >= 0.3) {
+    if (getRevealedFraction(ctx) >= revealThreshold) {
       done = true
       canvas.style.transition = 'opacity 2s ease'
       canvas.style.opacity = '0'
