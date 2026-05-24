@@ -19,8 +19,8 @@ function buildDOM(): { canvas: HTMLCanvasElement; revealThreshold: number } {
 
   const card = document.createElement('div')
   card.className = isDesktop
-    ? 'card-reveal w-[min(calc(100vw-40px),calc(100vh*3390/2346))] aspect-[3390/2346] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
-    : 'card-reveal w-[min(calc(100vw-40px),calc(100vh*2347/3390))] aspect-[2347/3390] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
+    ? 'card-reveal w-[min(calc(100vw-0px),calc(100vh*3390/2346))] aspect-[3390/2346] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
+    : 'card-reveal w-[min(calc(100vw-0px),calc(100vh*2347/3390))] aspect-[2347/3390] rounded-[4px] relative overflow-hidden bg-center bg-[length:100%_100%] bg-[#3f0d0d]'
   card.style.backgroundImage = `url(${isDesktop ? saveTheDatePhoto_wide : saveTheDatePhoto_long})`
 
   scene.appendChild(card)
