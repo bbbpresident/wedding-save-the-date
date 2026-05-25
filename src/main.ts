@@ -4,7 +4,7 @@ import saveTheDatePhoto_wide from './assets/savethedate_wide.png'
 
 let CARD_W = window.innerWidth
 let CARD_H = window.innerHeight
-const BRUSH_RADIUS = 36
+const BRUSH_RADIUS = window.innerWidth * 0.05
 
 function buildDOM(): { canvas: HTMLCanvasElement; revealThreshold: number } {
   CARD_W = window.innerWidth
@@ -117,6 +117,8 @@ function scratchLine(
   }
 }
 
+
+
 function getRevealedFraction(ctx: CanvasRenderingContext2D): number {
   const data = ctx.getImageData(0, 0, CARD_W, CARD_H).data
   let transparent = 0
@@ -149,7 +151,24 @@ function init() {
     }
   }
 
+  const isDesktop = window.innerWidth >= 768
+  let isPointerDown = false
+
+  canvas.addEventListener('pointerdown', (e) => {
+    if (!isDesktop) return
+    isPointerDown = true
+    if (done) return
+    const pos = getCanvasPos(canvas, e.clientX, e.clientY)
+    scratch(ctx, pos.x, pos.y)
+    lastPos = pos
+    afterScratch()
+  })
+
+  canvas.addEventListener('pointerup', () => { isPointerDown = false })
+  canvas.addEventListener('pointercancel', () => { isPointerDown = false })
+
   canvas.addEventListener('pointermove', (e) => {
+    if (isDesktop && !isPointerDown) return
     if (done) return
     const pos = getCanvasPos(canvas, e.clientX, e.clientY)
     if (lastPos) scratchLine(ctx, lastPos, pos)
@@ -160,6 +179,7 @@ function init() {
 
   canvas.addEventListener('pointerleave', () => {
     lastPos = null
+    if (isDesktop) isPointerDown = false
   })
 
   canvas.addEventListener('touchstart', (e) => {
