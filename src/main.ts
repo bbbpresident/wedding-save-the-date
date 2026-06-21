@@ -60,7 +60,7 @@ function drawScratchLayer(ctx: CanvasRenderingContext2D) {
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillText('something awaits', 0, 0)
-  ctx.fillText('click here.', 0, 20)
+  ctx.fillText('swipe here.', 0, 20)
   ctx.restore()
 
   ctx.strokeStyle = 'rgba(201,169,110,0.25)'
